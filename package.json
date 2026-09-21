@@ -2,10 +2,13 @@
   "name": "daar-el-mahfouz-site",
   "version": "4.0.0",
   "private": true,
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "scripts": {
     "dev": "npm run dev --prefix client",
     "client": "npm run dev --prefix client",
-    "install-all": "npm install --prefix client",
+    "install-all": "npm ci --prefix client",
     "build": "npm run build --prefix client",
     "preview": "npm run preview --prefix client"
   }

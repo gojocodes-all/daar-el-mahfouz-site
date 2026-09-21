@@ -16,9 +16,11 @@ Frontend-only React + Vite website for Daar El-Mahfouz for Da'wah and Islamic Sc
 
 ```bash
 cd client
-npm install
+npm ci
 npm run dev
 ```
+
+The committed lockfile and exact dependency versions keep local and deployment installs reproducible. Use Node.js `^20.19.0` or `>=22.12.0`, as required by the pinned Vite release.
 
 ## Deploy on Vercel
 
