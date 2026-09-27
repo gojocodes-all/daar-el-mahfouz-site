@@ -9,7 +9,9 @@
     "dev": "npm run dev --prefix client",
     "client": "npm run dev --prefix client",
     "install-all": "npm ci --prefix client",
+    "test": "npm test --prefix client",
     "build": "npm run build --prefix client",
-    "preview": "npm run preview --prefix client"
+    "preview": "npm run preview --prefix client",
+    "check": "npm run check --prefix client"
   }
 }
