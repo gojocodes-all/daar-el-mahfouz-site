@@ -4,8 +4,10 @@
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "test": "node --test src/registration.test.mjs",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "check": "npm test && npm run build"
   },
   "dependencies": {
     "@vitejs/plugin-react": "6.1.1",
