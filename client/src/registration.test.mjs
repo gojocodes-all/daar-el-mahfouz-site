@@ -4,6 +4,7 @@ import {
   buildRegistrationMessage,
   buildRegistrationUrl,
   createInitialRegistrationForm,
+  prepareRegistrationForm,
   WHATSAPP_NUMBER
 } from './registration.mjs';
 
@@ -67,4 +68,49 @@ test('creates an encoded WhatsApp URL for the configured institution number', ()
   assert.equal(url.origin, 'https://wa.me');
   assert.equal(url.pathname, `/${WHATSAPP_NUMBER}`);
   assert.equal(url.searchParams.get('text'), buildRegistrationMessage(form));
+});
+
+test('rejects whitespace-only required details in field order', () => {
+  const missingName = prepareRegistrationForm({
+    ...createInitialRegistrationForm(),
+    name: ' \t ',
+    phone: '08000000000'
+  });
+
+  assert.deepEqual(missingName.error, {
+    field: 'name',
+    message: 'Please enter your full name.'
+  });
+  assert.equal(missingName.form.name, '');
+
+  const missingPhone = prepareRegistrationForm({
+    ...createInitialRegistrationForm(),
+    name: 'Amina Yusuf',
+    phone: '   '
+  });
+
+  assert.deepEqual(missingPhone.error, {
+    field: 'phone',
+    message: 'Please enter your phone number.'
+  });
+  assert.equal(missingPhone.form.phone, '');
+});
+
+test('trims submitted details before building the WhatsApp message', () => {
+  const prepared = prepareRegistrationForm({
+    ...createInitialRegistrationForm(),
+    name: '  Amina Yusuf  ',
+    phone: '  08000000000 ',
+    message: '  Please share the next class date.  '
+  });
+
+  assert.equal(prepared.error, null);
+  assert.equal(prepared.form.name, 'Amina Yusuf');
+  assert.equal(prepared.form.phone, '08000000000');
+  assert.equal(prepared.form.message, 'Please share the next class date.');
+  assert.match(buildRegistrationMessage(prepared.form), /Name: Amina Yusuf\nPhone: 08000000000/);
+  assert.match(
+    buildRegistrationMessage(prepared.form),
+    /Extra message: Please share the next class date\./
+  );
 });

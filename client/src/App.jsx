@@ -35,6 +35,7 @@ import contactCard from './assets/1000475859.jpg';
 import {
   buildRegistrationUrl,
   createInitialRegistrationForm,
+  prepareRegistrationForm,
   WHATSAPP_NUMBER as whatsappNumber
 } from './registration.mjs';
 
@@ -129,10 +130,10 @@ function App() {
 
   const update = (event) => {
     const { name, value } = event.target;
+    event.target.setCustomValidity('');
+    setSent(false);
     setForm((currentForm) => ({ ...currentForm, [name]: value }));
   };
-
-  const registrationUrl = buildRegistrationUrl(form);
 
   const copyText = async (label, value) => {
     try {
@@ -146,8 +147,19 @@ function App() {
 
   const submitRegistration = (event) => {
     event.preventDefault();
+    const { form: normalizedForm, error } = prepareRegistrationForm(form);
+
+    if (error) {
+      const input = event.currentTarget.elements.namedItem(error.field);
+      input.setCustomValidity(error.message);
+      input.reportValidity();
+      setSent(false);
+      return;
+    }
+
+    setForm(normalizedForm);
     setSent(true);
-    window.open(registrationUrl, '_blank', 'noopener,noreferrer');
+    window.open(buildRegistrationUrl(normalizedForm), '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -431,7 +443,7 @@ function App() {
             <label>Exam target<select name="exam" value={form.exam} onChange={update}><option>Not exam-focused</option>{examTargets.map((target) => <option key={target}>{target}</option>)}</select></label>
             <label>Extra message<textarea name="message" value={form.message} onChange={update} placeholder="Mention any learning goal, preferred timing, age of learner, or special request."></textarea></label>
             <button type="submit" className="submitBtn"><Send /> Open WhatsApp Message</button>
-            {sent && <p className="successMsg"><CheckCircle2 /> WhatsApp opened. Review the message and press send there.</p>}
+            {sent && <p className="successMsg" role="status"><CheckCircle2 /> WhatsApp opened. Review the message and press send there.</p>}
           </form>
         </section>
       </main>

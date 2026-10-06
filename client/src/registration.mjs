@@ -14,8 +14,39 @@ export function createInitialRegistrationForm() {
   };
 }
 
+function normalizeRegistrationForm(form) {
+  return Object.fromEntries(
+    Object.entries(form).map(([field, value]) => [
+      field,
+      typeof value === 'string' ? value.trim() : value
+    ])
+  );
+}
+
+export function prepareRegistrationForm(form) {
+  const normalizedForm = normalizeRegistrationForm(form);
+
+  if (!normalizedForm.name) {
+    return {
+      form: normalizedForm,
+      error: { field: 'name', message: 'Please enter your full name.' }
+    };
+  }
+
+  if (!normalizedForm.phone) {
+    return {
+      form: normalizedForm,
+      error: { field: 'phone', message: 'Please enter your phone number.' }
+    };
+  }
+
+  return { form: normalizedForm, error: null };
+}
+
 export function buildRegistrationMessage(form) {
-  return `Assalamu Alaikum. I would like to register/enquire for Daar El-Mahfouz classes.\n\nName: ${form.name}\nPhone: ${form.phone}\nLearner category: ${form.category}\nProgramme: ${form.programme}\nCurrent level: ${form.level}\nPreferred mode: ${form.mode}\nPreferred schedule: ${form.schedule}\nExam target: ${form.exam}\nExtra message: ${form.message || 'None'}\n\nPlease guide me on the next steps.`;
+  const normalizedForm = normalizeRegistrationForm(form);
+
+  return `Assalamu Alaikum. I would like to register/enquire for Daar El-Mahfouz classes.\n\nName: ${normalizedForm.name}\nPhone: ${normalizedForm.phone}\nLearner category: ${normalizedForm.category}\nProgramme: ${normalizedForm.programme}\nCurrent level: ${normalizedForm.level}\nPreferred mode: ${normalizedForm.mode}\nPreferred schedule: ${normalizedForm.schedule}\nExam target: ${normalizedForm.exam}\nExtra message: ${normalizedForm.message || 'None'}\n\nPlease guide me on the next steps.`;
 }
 
 export function buildRegistrationUrl(form) {
