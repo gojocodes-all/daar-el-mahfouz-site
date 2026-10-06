@@ -1,5 +1,39 @@
 # Maintenance log
 
+## 2026-10-06 — Validate WhatsApp registration details
+
+### Rationale
+
+HTML `required` validation accepts whitespace-only text. A visitor could
+therefore open WhatsApp with a blank-looking name or phone number, and valid
+details retained accidental surrounding spaces in the generated enquiry.
+
+### Files changed
+
+- `client/src/registration.mjs` — added reusable normalization and required-field validation.
+- `client/src/App.jsx` — reports native field errors, submits normalized details and announces successful WhatsApp handoff.
+- `client/src/registration.test.mjs` — added regression coverage for blank and padded inputs.
+- `README.md` — documented the expanded registration boundary.
+- `.github/maintenance-log.md` — recorded this maintenance work.
+
+### Validation
+
+- Ran all six registration tests.
+- Ran the Vite production build.
+- Ran the complete `npm run check` gate in hosted CI.
+- Reviewed the full diff for security, accessibility, mobile behavior and backward compatibility.
+
+### Risk
+
+Low. Valid enquiries keep the existing WhatsApp number, message fields and
+new-tab behavior. Only whitespace-only required values are blocked, surrounding
+spaces are removed, and the existing success message gains status semantics.
+
+### Rollback
+
+Revert the pull request's squash commit to restore the previous form behavior
+and four-test registration suite.
+
 ## 2026-09-27 — Registration boundary and continuous validation
 
 ### Rationale
