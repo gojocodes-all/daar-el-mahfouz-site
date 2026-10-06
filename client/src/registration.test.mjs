@@ -70,7 +70,6 @@ test('creates an encoded WhatsApp URL for the configured institution number', ()
   assert.equal(url.searchParams.get('text'), buildRegistrationMessage(form));
 });
 
-
 test('rejects whitespace-only required details in field order', () => {
   const missingName = prepareRegistrationForm({
     ...createInitialRegistrationForm(),
