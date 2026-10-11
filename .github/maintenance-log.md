@@ -1,5 +1,42 @@
 # Maintenance log
 
+## 2026-10-11 — Keep page content visible across motion preferences
+
+### Rationale
+
+Every major section started transparent and depended on `IntersectionObserver`
+to become visible. Browsers without that API could therefore show an almost
+blank page. Visitors requesting reduced motion still received smooth scrolling,
+entrance transitions and a continuously floating logo.
+
+### Files changed
+
+- `client/src/reveal.mjs` — added a tested reveal boundary with reduced-motion and unsupported-browser fallbacks.
+- `client/src/App.jsx` — delegates reveal setup and cleanup to the shared boundary.
+- `client/src/style.css` — disables smooth scrolling and non-essential motion when requested.
+- `client/src/reveal.test.mjs` — covers immediate and observer-driven reveal paths.
+- `client/package.json`, `README.md` and `.github/maintenance-log.md` — include the new validation and maintenance record.
+
+### Validation
+
+- Ran all nine Node.js tests.
+- Ran the Vite production build.
+- Ran the complete `npm run check` gate.
+- Ran `git diff --check` and reviewed the complete diff for accessibility,
+  mobile behavior, security, compatibility and the existing visual direction.
+
+### Risk
+
+Low. The existing scroll-triggered presentation remains unchanged for visitors
+without a reduced-motion preference. The fallback only makes already-rendered
+content immediately visible and does not change copy, navigation, registration,
+contact destinations or deployment behavior.
+
+### Rollback
+
+Revert the pull request's squash commit to restore the observer-only reveal
+path and the previous motion behavior.
+
 ## 2026-10-06 — Validate WhatsApp registration details
 
 ### Rationale
