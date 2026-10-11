@@ -38,6 +38,7 @@ import {
   prepareRegistrationForm,
   WHATSAPP_NUMBER as whatsappNumber
 } from './registration.mjs';
+import { initializeReveal } from './reveal.mjs';
 
 const phoneDisplay = '08068012244';
 const email = 'lateefazeez1.aa@gmail.com';
@@ -109,16 +110,7 @@ const dawahServices = ['Public Islamic Lectures and Seminars', 'Friday (Jumu’a
 const supportWays = ['Cash Donations', 'Building Materials', 'Educational Materials and Furniture', 'Sponsorship of Specific Construction Phases'];
 
 function useReveal() {
-  useEffect(() => {
-    const elements = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.12 });
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  useEffect(() => initializeReveal(document, window), []);
 }
 
 function App() {
