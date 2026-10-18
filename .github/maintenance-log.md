@@ -1,5 +1,33 @@
 # Maintenance log
 
+## 2026-10-18 — Replace migration notes with a repository guide
+
+### Rationale
+
+The root README described the site mainly as a list of changes from an older version. It did not provide the complete root-level setup and command workflow, explain the WhatsApp-only registration data boundary, index the current files, or give contributors deployment and content-maintenance safeguards.
+
+### Files changed
+
+- `README.md` — documents the verified product surface, requirements, root command wrappers, registration privacy boundary, architecture, validation, deployment, and contribution expectations.
+- `.github/maintenance-log.md` — records this documentation maintenance work.
+
+### Validation
+
+- Compared every command with the root and client package manifests.
+- Compared the registration fields and handoff behavior with `client/src/registration.mjs` and `client/src/App.jsx`.
+- Compared the architecture table with the committed repository tree.
+- Verified the documented CI and Vercel settings against `.github/workflows/ci.yml` and the client build layout.
+- Reviewed all relative paths and the complete diff for accuracy, privacy, security, accessibility guidance, backward compatibility, and project scope.
+- The pull request CI run is the authoritative clean-branch test and production-build validation.
+
+### Risk
+
+Low. This changes documentation only. Application source, public content, contact details, payment details, dependencies, build behavior, and deployment configuration are unchanged.
+
+### Rollback
+
+Revert this pull request to restore the previous README and maintenance-log state.
+
 ## 2026-10-11 — Keep page content visible across motion preferences
 
 ### Rationale
