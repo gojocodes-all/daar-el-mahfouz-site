@@ -1,5 +1,33 @@
 # Maintenance log
 
+## 2026-10-23 — Make clipboard feedback reliable
+
+### Rationale
+
+Payment and donation copy failures were caught but stored in a value that neither button rendered, so users received no actionable feedback when clipboard permission was unavailable. Overlapping copy attempts could also let an older asynchronous result or timer replace or clear the newest message.
+
+### Files changed
+
+- `client/src/clipboard.mjs` — adds a dependency-free Clipboard API boundary with feature detection, latest-request ownership, timed feedback, and lifecycle cleanup.
+- `client/src/clipboard.test.mjs` — covers successful copies, unavailable and rejected clipboard writes, overlapping attempts, cleanup, and button-label selection.
+- `client/src/App.jsx` — uses the clipboard controller for both account controls and exposes success or manual-copy guidance through polite live feedback.
+- `README.md` — documents the clipboard boundary and expanded isolated test coverage.
+- `.github/maintenance-log.md` — records this maintenance work.
+
+### Validation
+
+- `npm run check` — 14/14 automated tests passed and the Vite production build completed in GitHub Actions.
+- Re-read the complete diff for repository conventions, accessibility, security, backwards compatibility, and scope.
+- Confirmed the change does not alter account details, registration behavior, external links, dependencies, or deployment configuration.
+
+### Risk
+
+Low. The change is limited to local copy-button feedback and a dependency-free controller. Account details remain rendered for manual selection if the browser denies clipboard access.
+
+### Rollback
+
+Revert this pull request to restore the previous inline Clipboard API handler and button labels.
+
 ## 2026-10-18 — Replace migration notes with a repository guide
 
 ### Rationale
