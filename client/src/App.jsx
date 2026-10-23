@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   BookOpen,
@@ -32,6 +32,7 @@ import logo from './assets/logo-clean.png';
 import flyerOne from './assets/1000475856.jpg';
 import flyerTwo from './assets/1000475857.jpg';
 import contactCard from './assets/1000475859.jpg';
+import { createClipboardController, getCopyFeedbackText } from './clipboard.mjs';
 import {
   buildRegistrationUrl,
   createInitialRegistrationForm,
@@ -116,9 +117,23 @@ function useReveal() {
 function App() {
   useReveal();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [copied, setCopied] = useState('');
+  const [copyFeedback, setCopyFeedback] = useState(null);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState(createInitialRegistrationForm);
+  const clipboardController = useRef(null);
+
+  useEffect(() => {
+    const controller = createClipboardController({
+      clipboard: navigator.clipboard,
+      onFeedback: setCopyFeedback
+    });
+    clipboardController.current = controller;
+
+    return () => {
+      controller.dispose();
+      clipboardController.current = null;
+    };
+  }, []);
 
   const update = (event) => {
     const { name, value } = event.target;
@@ -127,14 +142,8 @@ function App() {
     setForm((currentForm) => ({ ...currentForm, [name]: value }));
   };
 
-  const copyText = async (label, value) => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(label);
-      setTimeout(() => setCopied(''), 1800);
-    } catch {
-      setCopied('Copy manually');
-    }
+  const copyText = (label, value) => {
+    clipboardController.current?.copy(label, value);
   };
 
   const submitRegistration = (event) => {
@@ -321,7 +330,13 @@ function App() {
               <p><b>Bank:</b> {account.bank}</p>
               <p><b>Account Name:</b> {account.name}</p>
               <p><b>Account Number:</b> {account.number}</p>
-              <button onClick={() => copyText('payment', `${account.bank}\n${account.name}\n${account.number}`)}><Clipboard /> {copied === 'payment' ? 'Copied' : 'Copy payment details'}</button>
+              <button
+                type="button"
+                aria-live="polite"
+                onClick={() => copyText('payment', `${account.bank}\n${account.name}\n${account.number}`)}
+              >
+                <Clipboard /> {getCopyFeedbackText(copyFeedback, 'payment', 'Copy payment details')}
+              </button>
             </div>
           </div>
         </section>
@@ -388,7 +403,13 @@ function App() {
               <p><b>Bank:</b> {account.bank}</p>
               <p><b>Account Name:</b> {account.name}</p>
               <p><b>Account Number:</b> {account.number}</p>
-              <button onClick={() => copyText('donation', `${account.bank}\n${account.name}\n${account.number}`)}><Clipboard /> {copied === 'donation' ? 'Copied' : 'Copy donation details'}</button>
+              <button
+                type="button"
+                aria-live="polite"
+                onClick={() => copyText('donation', `${account.bank}\n${account.name}\n${account.number}`)}
+              >
+                <Clipboard /> {getCopyFeedbackText(copyFeedback, 'donation', 'Copy donation details')}
+              </button>
             </div>
           </div>
         </section>
