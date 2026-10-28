@@ -69,9 +69,10 @@ When changing the form, keep `createInitialRegistrationForm`, `prepareRegistrati
 | `client/src/main.jsx` | React application bootstrap |
 | `client/src/App.jsx` | Institutional content and browser interactions |
 | `client/src/clipboard.mjs` | Race-safe Clipboard API adapter and transient success/failure feedback |
+| `client/src/navigation.mjs` | Mobile-menu Escape handling and focus restoration |
 | `client/src/registration.mjs` | Registration defaults, validation, normalization, message formatting, and WhatsApp URL |
 | `client/src/reveal.mjs` | Progressive reveal with reduced-motion and unsupported-browser fallbacks |
-| `client/src/*.test.mjs` | Node.js regression tests for clipboard, registration, and reveal behavior |
+| `client/src/*.test.mjs` | Node.js regression tests for clipboard, navigation, registration, and reveal behavior |
 | `client/src/style.css` | Responsive layout, typography, components, and motion styles |
 | `client/src/assets/` | Institution logo, flyers, and contact artwork |
 | `.github/workflows/ci.yml` | Hosted test and production-build validation |
@@ -88,7 +89,7 @@ npm run check
 
 For content or layout changes, also inspect the site manually at desktop and mobile widths. Verify navigation, registration validation, the WhatsApp message preview, copy controls, keyboard focus, and reduced-motion behavior.
 
-Tests inject clipboard and reveal doubles and do not contact WhatsApp or any other external service.
+Tests inject clipboard, navigation, and reveal doubles and do not contact WhatsApp or any other external service.
 
 ## Deployment
 

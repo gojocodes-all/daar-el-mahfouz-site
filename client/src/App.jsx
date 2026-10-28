@@ -33,6 +33,7 @@ import flyerOne from './assets/1000475856.jpg';
 import flyerTwo from './assets/1000475857.jpg';
 import contactCard from './assets/1000475859.jpg';
 import { createClipboardController, getCopyFeedbackText } from './clipboard.mjs';
+import { createEscapeKeyHandler } from './navigation.mjs';
 import {
   buildRegistrationUrl,
   createInitialRegistrationForm,
@@ -121,6 +122,7 @@ function App() {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState(createInitialRegistrationForm);
   const clipboardController = useRef(null);
+  const menuButtonRef = useRef(null);
 
   useEffect(() => {
     const controller = createClipboardController({
@@ -134,6 +136,18 @@ function App() {
       clipboardController.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+
+    const handleEscape = createEscapeKeyHandler({
+      closeMenu: () => setMenuOpen(false),
+      restoreFocus: () => menuButtonRef.current?.focus()
+    });
+    document.addEventListener('keydown', handleEscape);
+
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [menuOpen]);
 
   const update = (event) => {
     const { name, value } = event.target;
@@ -170,10 +184,17 @@ function App() {
           <img src={logo} alt="Daar El-Mahfouz logo" />
           <span>Daar El-Mahfouz</span>
         </a>
-        <button className="menuButton" onClick={() => setMenuOpen((isOpen) => !isOpen)} aria-label="Toggle navigation menu">
+        <button
+          ref={menuButtonRef}
+          className="menuButton"
+          onClick={() => setMenuOpen((isOpen) => !isOpen)}
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-controls="primary-navigation"
+          aria-expanded={menuOpen}
+        >
           {menuOpen ? <X /> : <Menu />}
         </button>
-        <nav className={menuOpen ? 'open' : ''} onClick={() => setMenuOpen(false)}>
+        <nav id="primary-navigation" className={menuOpen ? 'open' : ''} onClick={() => setMenuOpen(false)}>
           {navLinks.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
           <a className="navCta" href={`https://wa.me/${whatsappNumber}`}>WhatsApp</a>
         </nav>
