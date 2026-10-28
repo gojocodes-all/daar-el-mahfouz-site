@@ -1,5 +1,45 @@
 # Maintenance log
 
+## 2026-10-28 — Expose and dismiss the mobile navigation accessibly
+
+### Rationale
+
+The mobile menu button used a fixed “Toggle navigation menu” label and did not
+expose its expanded state or the navigation it controlled. Keyboard users also
+could not dismiss an open menu with Escape and return focus to its toggle. The
+menu now publishes synchronized semantics and supports conventional Escape
+dismissal without changing the existing navigation destinations or design.
+
+### Files changed
+
+- `client/src/App.jsx` — connects the toggle to the primary navigation,
+  synchronizes its accessible label and expanded state, and installs scoped
+  Escape handling while the menu is open.
+- `client/src/navigation.mjs` — isolates the Escape-key behavior.
+- `client/src/navigation.test.mjs` — covers the ARIA contract, ignored keys,
+  menu closure, and focus restoration.
+- `README.md` — documents the navigation boundary and validation coverage.
+- `.github/maintenance-log.md` — records this maintenance work.
+
+### Validation
+
+- `npm run install-all`
+- `npm run check`
+- `git diff --check`
+- Reviewed the complete diff for keyboard behavior, accessibility, responsive
+  layout, security, backward compatibility, and the existing visual direction.
+
+### Risk
+
+Low. Pointer and touch toggling, link destinations, menu styling, and desktop
+navigation are unchanged. The new listener exists only while the menu is open
+and is removed when it closes or the component unmounts.
+
+### Rollback
+
+Revert the pull request's squash commit to restore the fixed toggle label and
+remove Escape dismissal, the navigation helper, and its regression tests.
+
 ## 2026-10-23 — Make clipboard feedback reliable
 
 ### Rationale
