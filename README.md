@@ -56,7 +56,12 @@ Pull requests and pushes to `main` run `npm run check` in GitHub Actions with re
 
 The registration form collects the prospective learner’s name, phone number, category, programme, current level, preferred teaching mode, preferred schedule, examination target, and optional message.
 
-Name and phone are required. The browser trims the submitted values, builds a WhatsApp message, and opens `wa.me` in a new tab. The application does not send the form to this repository, a custom API, or a database. After the handoff, WhatsApp’s own terms and privacy practices apply.
+Name and phone are required. The phone field accepts common local and
+international formatting while requiring 7–15 digits, and exposes telephone
+keyboard and autofill hints on supported devices. The browser trims the
+submitted values, builds a WhatsApp message, and opens `wa.me` in a new tab.
+The application does not send the form to this repository, a custom API, or a
+database. After the handoff, WhatsApp’s own terms and privacy practices apply.
 
 When changing the form, keep `createInitialRegistrationForm`, `prepareRegistrationForm`, and `buildRegistrationMessage` synchronized, and update the focused tests.
 

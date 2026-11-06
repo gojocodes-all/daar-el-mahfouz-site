@@ -1,12 +1,16 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import test from 'node:test';
 import {
   buildRegistrationMessage,
   buildRegistrationUrl,
   createInitialRegistrationForm,
+  isValidRegistrationPhone,
   prepareRegistrationForm,
   WHATSAPP_NUMBER
 } from './registration.mjs';
+
+const appSource = fs.readFileSync(new URL('./App.jsx', import.meta.url), 'utf8');
 
 test('creates an independent form state with the documented defaults', () => {
   const first = createInitialRegistrationForm();
@@ -94,6 +98,49 @@ test('rejects whitespace-only required details in field order', () => {
     message: 'Please enter your phone number.'
   });
   assert.equal(missingPhone.form.phone, '');
+});
+
+test('accepts realistic local and international phone formats', () => {
+  for (const phone of [
+    '0806 801 2244',
+    '+234 806 801 2244',
+    '+1 (202) 555-0123',
+    '020-7946-0958'
+  ]) {
+    assert.equal(isValidRegistrationPhone(phone), true, phone);
+    assert.equal(
+      prepareRegistrationForm({
+        ...createInitialRegistrationForm(),
+        name: 'Amina Yusuf',
+        phone
+      }).error,
+      null
+    );
+  }
+});
+
+test('rejects letter-only, malformed, and implausibly short phone values', () => {
+  for (const phone of ['call me', '0806ext2', '12345', '++2348068012244']) {
+    assert.equal(isValidRegistrationPhone(phone), false, phone);
+    assert.deepEqual(
+      prepareRegistrationForm({
+        ...createInitialRegistrationForm(),
+        name: 'Amina Yusuf',
+        phone
+      }).error,
+      {
+        field: 'phone',
+        message: 'Please enter a valid phone number using 7 to 15 digits.'
+      }
+    );
+  }
+});
+
+test('phone field exposes mobile keyboard and autofill hints', () => {
+  assert.match(
+    appSource,
+    /<input required type="tel" inputMode="tel" autoComplete="tel" name="phone"/
+  );
 });
 
 test('trims submitted details before building the WhatsApp message', () => {

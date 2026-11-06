@@ -1,5 +1,46 @@
 # Maintenance log
 
+## 2026-11-06 — Validate registration phone details before WhatsApp handoff
+
+### Rationale
+
+The registration flow rejected blank names and phone values, but any other
+phone text—including plain letters or an implausibly short value—opened a
+WhatsApp enquiry containing unusable contact details. The phone control also
+did not expose telephone keyboard or autofill hints on mobile devices.
+
+### Files changed
+
+- `client/src/registration.mjs` — validates common local and international
+  formatting with 7–15 digits before constructing the enquiry.
+- `client/src/App.jsx` — identifies the field as a telephone input and adds
+  mobile keyboard and autofill hints.
+- `client/src/registration.test.mjs` — covers accepted formats, malformed and
+  short values, the displayed error contract, and the input metadata.
+- `README.md` — documents the verified registration boundary.
+- `.github/maintenance-log.md` — records this maintenance work.
+
+### Validation
+
+- `npm run install-all`
+- `npm run check`
+- `git diff --check`
+- Reviewed the complete diff for registration behavior, mobile usability,
+  accessibility, privacy, security, backward compatibility, and the existing
+  institutional design.
+
+### Risk
+
+Low. Valid local and international values retain their original formatting in
+the WhatsApp message. The destination number, other form fields, message text,
+dependencies, visual design, and data boundary are unchanged. Only values
+that cannot represent a practical phone number are blocked.
+
+### Rollback
+
+Revert this pull request's squash commit to restore nonblank-only phone
+validation and remove the telephone input hints and focused tests.
+
 ## 2026-10-28 — Expose and dismiss the mobile navigation accessibly
 
 ### Rationale
