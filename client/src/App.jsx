@@ -465,7 +465,7 @@ function App() {
           <form className="registerForm reveal delayOne" onSubmit={submitRegistration}>
             <div className="formRow">
               <label>Full name<input required name="name" value={form.name} onChange={update} placeholder="Enter full name" /></label>
-              <label>Phone number<input required name="phone" value={form.phone} onChange={update} placeholder="Your WhatsApp/phone number" /></label>
+              <label>Phone number<input required type="tel" inputMode="tel" autoComplete="tel" name="phone" value={form.phone} onChange={update} placeholder="Your WhatsApp/phone number" /></label>
             </div>
             <label>Learner category<select name="category" value={form.category} onChange={update}>{learners.map((learner) => <option key={learner}>{learner}</option>)}</select></label>
             <label>Programme<select name="programme" value={form.programme} onChange={update}>{programmes.map((programme) => <option key={programme.title}>{programme.title}</option>)}</select></label>

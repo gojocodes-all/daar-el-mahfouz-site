@@ -1,4 +1,16 @@
 export const WHATSAPP_NUMBER = '2348068012244';
+const PHONE_CHARACTERS = /^\+?[\d\s().-]+$/;
+
+export function isValidRegistrationPhone(value) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  const normalizedValue = value.trim();
+  const digitCount = normalizedValue.replace(/\D/g, '').length;
+
+  return PHONE_CHARACTERS.test(normalizedValue) && digitCount >= 7 && digitCount <= 15;
+}
 
 export function createInitialRegistrationForm() {
   return {
@@ -37,6 +49,16 @@ export function prepareRegistrationForm(form) {
     return {
       form: normalizedForm,
       error: { field: 'phone', message: 'Please enter your phone number.' }
+    };
+  }
+
+  if (!isValidRegistrationPhone(normalizedForm.phone)) {
+    return {
+      form: normalizedForm,
+      error: {
+        field: 'phone',
+        message: 'Please enter a valid phone number using 7 to 15 digits.'
+      }
     };
   }
 
