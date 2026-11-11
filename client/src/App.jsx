@@ -181,7 +181,7 @@ function App() {
     <>
       <header className="siteHeader">
         <a className="brand" href="#home" aria-label="Daar El-Mahfouz home">
-          <img src={logo} alt="Daar El-Mahfouz logo" />
+          <img src={logo} alt="Daar El-Mahfouz logo" width={533} height={471} />
           <span>Daar El-Mahfouz</span>
         </a>
         <button
@@ -220,10 +220,15 @@ function App() {
           </div>
           <div className="heroVisual reveal delayOne">
             <div className="logoBadge">
-              <img src={logo} alt="Daar El-Mahfouz logo" />
+              <img src={logo} alt="Daar El-Mahfouz logo" width={533} height={471} />
             </div>
             <div className="heroCard">
-              <img src={flyerTwo} alt="Daar El-Mahfouz online classes flyer" />
+              <img
+                src={flyerTwo}
+                alt="Daar El-Mahfouz online classes flyer"
+                width={1536}
+                height={1536}
+              />
               <div className="heroCardText">
                 <span>Admission is open</span>
                 <strong>Online and physical learning available</strong>
@@ -240,7 +245,7 @@ function App() {
             <p>Its programmes are structured for children, youths and adults, with teaching methods that support learners at different stages of their educational journey.</p>
           </div>
           <div className="identityPanel reveal delayOne">
-            <img src={logo} alt="Daar El-Mahfouz identity" />
+            <img src={logo} alt="Daar El-Mahfouz identity" width={533} height={471} />
             <span>Daar El-Mahfouz for Da’wah and Islamic Scholarship</span>
             <strong>“Building Lives Upon the Qur’an and the Sunnah.”</strong>
           </div>
@@ -397,7 +402,14 @@ function App() {
             <h2>Beyond classroom learning.</h2>
             <p>Daar El-Mahfouz also contributes to Islamic education and community development through lectures, counselling, programmes, workshops and educational consultation.</p>
             <div className="dawahImageWrap">
-              <img src={flyerOne} alt="Daar El-Mahfouz class flyer" />
+              <img
+                src={flyerOne}
+                alt="Daar El-Mahfouz class flyer"
+                width={1536}
+                height={1536}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
           <div className="serviceGrid reveal delayOne">
@@ -460,7 +472,15 @@ function App() {
               <a href={`mailto:${email}`}><Mail /> {email}</a>
               <span><MapPin /> {location}</span>
             </div>
-            <img className="contactCard" src={contactCard} alt="Daar El-Mahfouz contact card" />
+            <img
+              className="contactCard"
+              src={contactCard}
+              alt="Daar El-Mahfouz contact card"
+              width={1536}
+              height={903}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
           <form className="registerForm reveal delayOne" onSubmit={submitRegistration}>
             <div className="formRow">
@@ -483,7 +503,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <img src={logo} alt="Daar El-Mahfouz logo" />
+        <img src={logo} alt="Daar El-Mahfouz logo" width={533} height={471} />
         <h3>Daar El-Mahfouz</h3>
         <p>For Da’wah and Islamic Scholarship</p>
         <div className="footerLinks">
