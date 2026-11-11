@@ -1,5 +1,50 @@
 # Maintenance log
 
+## 2026-11-11 — Stabilize image layout and defer offscreen artwork
+
+### Rationale
+
+The page rendered seven images without intrinsic dimensions, so browsers could
+not reserve each image's aspect ratio before its file was decoded. Two unique
+images appear far below the initial viewport but were also eligible for eager
+loading: the 331,581-byte class flyer and 123,354-byte contact card. The markup
+now exposes the verified source dimensions for stable layout and lets the
+browser defer those 454,935 bytes until the visitor approaches their sections.
+The above-the-fold hero flyer remains eager.
+
+### Files changed
+
+- `client/src/App.jsx` — adds verified intrinsic dimensions to every image and
+  native lazy/async loading to the two unique below-the-fold images.
+- `client/src/style.css` — keeps intrinsic ratios responsive when width is
+  constrained, while existing component-specific sizes continue to override it.
+- `client/src/image-loading.test.mjs` — protects the dimension and loading
+  contracts, including the eager hero path.
+- `README.md` — documents the media-delivery behavior and validation coverage.
+- `.github/maintenance-log.md` — records this maintenance work.
+
+### Validation
+
+- `npm run install-all` — installed the locked frontend dependency graph.
+- `npm run check` — all 21 Node.js tests and the Vite production build passed.
+- `npx --yes node@22.12.0 --test client/src/*.test.mjs` — all 21 tests
+  passed on the CI-pinned Node.js release.
+- `git diff --check` — passed.
+- Reviewed the complete diff for layout behavior, accessibility, performance,
+  backward compatibility, security, and the existing institutional design.
+
+### Risk
+
+Low. Image sources, alternatives, CSS, visual dimensions, and the eager hero
+path are unchanged. Browsers that support native lazy loading may defer two
+offscreen requests; browsers that do not support it retain their existing
+behavior. No content, dependency, route, form, data, or deployment changes.
+
+### Rollback
+
+Revert this pull request's squash commit to remove the image metadata and
+loading hints. No stored data, dependency, or deployment migration is involved.
+
 ## 2026-11-06 — Validate registration phone details before WhatsApp handoff
 
 ### Rationale
