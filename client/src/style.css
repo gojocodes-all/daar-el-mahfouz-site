@@ -942,6 +942,20 @@ textarea {
 
 .successMsg svg {
   width: 18px;
+  flex: 0 0 auto;
+}
+
+.successMsg a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.successMsg a:focus-visible {
+  outline: 3px solid rgba(8, 122, 71, 0.28);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .footer {

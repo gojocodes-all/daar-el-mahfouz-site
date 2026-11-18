@@ -1,5 +1,47 @@
 # Maintenance log
 
+## 2026-11-18 — Keep registration usable when the WhatsApp tab is blocked
+
+### Rationale
+
+The registration form always announced that WhatsApp had opened after calling
+`window.open`. Browsers and embedded webviews can block that new tab, leaving a
+visitor with a success message but no way to reach the prepared enquiry. The
+form now retains the exact generated WhatsApp URL and exposes it as a direct,
+user-initiated fallback after a valid submission.
+
+### Files changed
+
+- `client/src/App.jsx` — stores the prepared handoff URL, clears stale fallback
+  state when the form changes or validation fails, and renders an accessible
+  direct link without removing the existing automatic handoff.
+- `client/src/style.css` — gives the fallback link visible affordance and a
+  keyboard focus indicator within the existing success treatment.
+- `client/src/registration.test.mjs` — protects the fallback link, safe external
+  link attributes, and blocked-tab guidance.
+- `README.md` — documents the browser handoff fallback.
+- `.github/maintenance-log.md` — records the maintenance decision.
+
+### Validation
+
+- `npm run install-all`
+- `npm run check`
+- `git diff --check`
+- Reviewed the complete diff for registration behavior, accessibility, mobile
+  webviews, privacy, security, backward compatibility, and institutional scope.
+
+### Risk
+
+Low. Validation, message content, WhatsApp destination, automatic new-tab
+behavior, form fields, dependencies, and stored data remain unchanged. The new
+link appears only after a valid submission and points to the same encoded URL
+already passed to `window.open`.
+
+### Rollback
+
+Revert this pull request's squash commit to restore the previous success-only
+message. No stored data, dependency, API, or deployment migration is involved.
+
 ## 2026-11-11 — Stabilize image layout and defer offscreen artwork
 
 ### Rationale

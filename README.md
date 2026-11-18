@@ -63,6 +63,9 @@ keyboard and autofill hints on supported devices. The browser trims the
 submitted values, builds a WhatsApp message, and opens `wa.me` in a new tab.
 The application does not send the form to this repository, a custom API, or a
 database. After the handoff, WhatsApp’s own terms and privacy practices apply.
+If a browser or embedded webview blocks the automatic new tab, the confirmation
+status keeps a direct link to the same prepared message so the visitor can
+continue with an explicit click.
 
 When changing the form, keep `createInitialRegistrationForm`, `prepareRegistrationForm`, and `buildRegistrationMessage` synchronized, and update the focused tests.
 
