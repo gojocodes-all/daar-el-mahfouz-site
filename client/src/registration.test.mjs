@@ -143,6 +143,15 @@ test('phone field exposes mobile keyboard and autofill hints', () => {
   );
 });
 
+test('registration handoff keeps a direct fallback to the prepared message', () => {
+  assert.match(appSource, /setRegistrationUrl\(url\)/);
+  assert.match(
+    appSource,
+    /<a href=\{registrationUrl\} target="_blank" rel="noopener noreferrer">/
+  );
+  assert.match(appSource, /If no new tab opened/);
+});
+
 test('trims submitted details before building the WhatsApp message', () => {
   const prepared = prepareRegistrationForm({
     ...createInitialRegistrationForm(),

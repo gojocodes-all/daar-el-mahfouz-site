@@ -119,7 +119,7 @@ function App() {
   useReveal();
   const [menuOpen, setMenuOpen] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState(null);
-  const [sent, setSent] = useState(false);
+  const [registrationUrl, setRegistrationUrl] = useState('');
   const [form, setForm] = useState(createInitialRegistrationForm);
   const clipboardController = useRef(null);
   const menuButtonRef = useRef(null);
@@ -152,7 +152,7 @@ function App() {
   const update = (event) => {
     const { name, value } = event.target;
     event.target.setCustomValidity('');
-    setSent(false);
+    setRegistrationUrl('');
     setForm((currentForm) => ({ ...currentForm, [name]: value }));
   };
 
@@ -168,13 +168,14 @@ function App() {
       const input = event.currentTarget.elements.namedItem(error.field);
       input.setCustomValidity(error.message);
       input.reportValidity();
-      setSent(false);
+      setRegistrationUrl('');
       return;
     }
 
     setForm(normalizedForm);
-    setSent(true);
-    window.open(buildRegistrationUrl(normalizedForm), '_blank', 'noopener,noreferrer');
+    const url = buildRegistrationUrl(normalizedForm);
+    setRegistrationUrl(url);
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -497,7 +498,17 @@ function App() {
             <label>Exam target<select name="exam" value={form.exam} onChange={update}><option>Not exam-focused</option>{examTargets.map((target) => <option key={target}>{target}</option>)}</select></label>
             <label>Extra message<textarea name="message" value={form.message} onChange={update} placeholder="Mention any learning goal, preferred timing, age of learner, or special request."></textarea></label>
             <button type="submit" className="submitBtn"><Send /> Open WhatsApp Message</button>
-            {sent && <p className="successMsg" role="status"><CheckCircle2 /> WhatsApp opened. Review the message and press send there.</p>}
+            {registrationUrl && (
+              <p className="successMsg" role="status">
+                <CheckCircle2 />
+                <span>
+                  WhatsApp handoff prepared. If no new tab opened,{' '}
+                  <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
+                    open the prepared message
+                  </a>.
+                </span>
+              </p>
+            )}
           </form>
         </section>
       </main>
