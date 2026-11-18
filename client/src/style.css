@@ -58,7 +58,6 @@ body::after {
 
 img {
   max-width: 100%;
-  height: auto;
   display: block;
 }
 
@@ -942,20 +941,6 @@ textarea {
 
 .successMsg svg {
   width: 18px;
-  flex: 0 0 auto;
-}
-
-.successMsg a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-}
-
-.successMsg a:focus-visible {
-  outline: 3px solid rgba(8, 122, 71, 0.28);
-  outline-offset: 3px;
-  border-radius: 4px;
 }
 
 .footer {
@@ -1020,26 +1005,6 @@ textarea {
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(-1deg); }
   50% { transform: translateY(-16px) rotate(1deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 @media (max-width: 1180px) {
